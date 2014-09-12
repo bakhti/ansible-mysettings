@@ -1,0 +1,12 @@
+---
+- name: Tycho-s PPA repo
+  apt_repository:
+    repo='ppa:tycho-s/ppa'
+    update_cache=yes
+  when: ansible_distribution == 'Ubuntu'
+  sudo: yes
+
+- name: Install Qtile apt package
+  apt: pkg=qtile state=latest
+  when: ansible_distribution == 'Ubuntu'
+  sudo: yes

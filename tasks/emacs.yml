@@ -1,0 +1,12 @@
+---
+- name: Ubuntu Elisp PPA repo
+  apt_repository:
+    repo='ppa:ubuntu-elisp/ppa'
+    update_cache=yes
+  when: ansible_distribution == 'Ubuntu'
+  sudo: yes
+
+- name: Install Emacs apt package
+  apt: pkg=emacs-snapshot state=latest
+  when: ansible_distribution == 'Ubuntu'
+  sudo: yes
