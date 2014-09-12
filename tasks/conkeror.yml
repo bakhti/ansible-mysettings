@@ -1,0 +1,23 @@
+---
+- name: My sources dir is available
+  file:
+    dest={{ conkeror.path|default('%s/src'|format(ansible_env.HOME)) }}
+    state=directory
+
+- name: Get Conkeror source files
+  git:
+    repo=git://repo.or.cz/conkeror.git
+    dest={{ conkeror.path|default('%s/src'|format(ansible_env.HOME)) }}/conkeror
+
+- name: Desktop file
+  template:
+    src=conkeror.desktop.j2
+    dest={{ conkeror.desktop_dir|default('%s/.local/share/applications'|format(ansible_env.HOME)) }}/conkeror.desktop
+
+- name: Make it default application
+  command: /usr/bin/xdg-mime default conkeror.desktop x-scheme-handler/{{ item }}
+  with_items:
+    - http
+    - https
+
+#sudo update-alternatives --config x-www-browser

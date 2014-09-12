@@ -1,0 +1,64 @@
+#+TITLE: Automate my environment setup
+#+AUTHOR: Bakhti Aripov
+
+* Ansible
+
+[[http://www.ansible.com/home][Ansible]] can be installed from [[https://launchpad.net/~rquillo/+archive/ubuntu/ansible][Rodney Quillo's PPA]]:
+
+#+BEGIN_SRC sh
+sudo add-apt-repository ppa:rquillo/ansible
+sudo apt-get update -qq
+sudo apt-get install ansible
+#+END_SRC
+
+* Qtile
+
+On Ubuntu I install [[https://github.com/qtile/qtile][qtile]] from [[https://launchpad.net/~tycho-s/+archive/ubuntu/ppa][Tycho's PPA]]
+
+#+BEGIN_SRC sh
+sudo add-apt-repository ppa:tycho-s/ppa
+sudo apt-get update -qq
+sudo apt-get install qtile
+#+END_SRC
+
+* Conkeror
+
+To install [[http://conkeror.org/][Conkeror]] I usually just clone it into my =src= folder and, assuming that firefox is already in the system, use the following alias:
+
+#+BEGIN_SRC sh
+if [ ! -f ~/src ]; then mkdir ~/src fi
+git clone git://repo.or.cz/conkeror.git ~/src/conkeror
+alias conkeror="firefox -app ${HOME}/src/conkeror/application.ini"
+#+END_SRC
+
+According to [[http://conkeror.org/DefaultBrowser][Conkeror wiki]], to tell the system that conkeror is our default browser, we need to do the following:
+
+#+BEGIN_SRC sh
+if [ ! -f ~/.local/share/applications ]; then mkdir -p ~/.local/share/applications fi
+cat > ~/.local/share/applications/conkeror.desktop << EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Icon=conkeror.png
+Name=Conkeror
+Comment=Emacs like Web Browser
+GenericName=Web Browser
+Exec=conkeror %u
+Categories=GNOME;GTK;Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;x-scheme-handler/chrome;video/webm;
+EOF
+xdg-mime default conkeror.desktop x-scheme-handler/http
+xdg-mime default conkeror.desktop x-scheme-handler/https
+# sudo update-alternatives --config x-www-browser
+#+END_SRC
+* Emacs
+
+There is a [[https://launchpad.net/~ubuntu-elisp/+archive/ubuntu/ppa][Ubuntu Emacs Lisp PPA]] with a daily snapshot:
+
+#+BEGIN_SRC sh
+sudo add-apt-repository ppa:ubuntu-elisp/ppa
+sudo apt-get update -qq
+sudo apt-get install emacs-snapshot
+#+END_SRC
+

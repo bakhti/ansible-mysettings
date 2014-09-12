@@ -1,0 +1,5 @@
+---
+galaxy_info:
+  author: Bakhti Aripov
+  description: Ansible role to setup my work environment
+  license: CC-BY-SA
