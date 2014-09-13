@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  remote_user: ubuntu
+  vars:
+    myapps:
+      - name: qtile
+        cfgpath: .config/qtile
+        files:
+          - config.py
+      - name: emacs
+        cfgpath: .emacs.d
+        files:
+          - init.el
+          - custom.el
+          - settings.el
+      - name: conkeror
+        cfgpath: .conkerorrc
+        files:
+          - init.js
+          - webjumps.js
+          - functions.js
+
+  roles:
+    - ansible-mysettings

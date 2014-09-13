@@ -1,2 +1,19 @@
 ---
+- name: Config dirs available
+  file:
+    dest={{ '%s/%s'|format(ansible_env.HOME, item.cfgpath) }}
+    state=directory mode=0755
+  with_items: myapps
+
+- name: Configuration files
+  copy:
+    src={{ item.0.name }}-{{ item.1 }}
+    dest={{ '%s/%s/%s'|format(ansible_env.HOME, item.0.cfgpath, item.1) }}
+    mode=0644
+  with_subelements:
+    - myapps
+    - files
+
+- include: qtile.yml
 - include: conkeror.yml
+- include: emacs.yml
