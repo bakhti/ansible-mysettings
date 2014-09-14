@@ -1,19 +1,8 @@
 ---
-- name: My sources dir is available
-  file:
-    dest={{ mysrcpath|default('%s/src'|format(ansible_env.HOME)) }}
-    state=directory
-
-# ssh-keyscan repo.or.cz |sudo tee -a /etc/ssh/ssh_known_hosts
 - name: Get Conkeror source files
   git:
-    repo=git://repo.or.cz/conkeror.git
+    repo=git://repo.or.cz/conkeror.git accept_hostkey=yes
     dest={{ mysrcpath|default('%s/src'|format(ansible_env.HOME)) }}/conkeror
-
-- name: Desktop dir is available
-  file:
-    dest={{ '%s/.local/share/applications'|format(ansible_env.HOME) }}
-    state=directory
 
 - name: Desktop file
   template:
@@ -25,10 +14,16 @@
   when: ansible_distribution == 'Ubuntu'
   sudo: yes
 
-- name: Make it default application
+- name: Is conkeror my default browser?
+  command: /usr/bin/xdg-mime query default x-scheme-handler/http
+  changed_when: False
+  register: conkeror_default
+
+- name: Lets make it default
   command: /usr/bin/xdg-mime default conkeror.desktop x-scheme-handler/{{ item }}
   with_items:
     - http
     - https
+  when: conkeror_default.stdout != 'conkeror.desktop'
 
 #sudo update-alternatives --config x-www-browser

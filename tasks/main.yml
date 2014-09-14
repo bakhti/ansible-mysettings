@@ -1,9 +1,19 @@
 ---
+- name: My sources dir is available
+  file:
+    dest={{ mysrcpath|default('%s/src'|format(ansible_env.HOME)) }}
+    state=directory mode=0755
+
 - name: Config dirs available
   file:
     dest={{ '%s/%s'|format(ansible_env.HOME, item.cfgpath) }}
     state=directory mode=0755
   with_items: myapps
+
+- name: Desktop dir is available
+  file:
+    dest={{ '%s/.local/share/applications'|format(ansible_env.HOME) }}
+    state=directory mode=0755
 
 - name: Configuration files
   copy:
