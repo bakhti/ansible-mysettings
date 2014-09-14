@@ -20,10 +20,15 @@
     src=conkeror.desktop.j2
     dest={{ '%s/.local/share/applications/conkeror.desktop'|format(ansible_env.HOME) }}
 
-# - name: Make it default application
-#   command: /usr/bin/xdg-mime default conkeror.desktop x-scheme-handler/{{ item }}
-#   with_items:
-#     - http
-#     - https
+- name: xdg-utils is available
+  apt: pkg=xdg-utils state=latest
+  when: ansible_distribution == 'Ubuntu'
+  sudo: yes
+
+- name: Make it default application
+  command: /usr/bin/xdg-mime default conkeror.desktop x-scheme-handler/{{ item }}
+  with_items:
+    - http
+    - https
 
 #sudo update-alternatives --config x-www-browser

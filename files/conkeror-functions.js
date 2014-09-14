@@ -30,48 +30,6 @@ interactive("org-capture", "Clip url, title, and selection to capture via org-pr
 define_key(content_buffer_normal_keymap, "C-c r", "org-capture");
 define_key(content_buffer_normal_keymap, "C-c l", "org-store-link");
 
-// //-----=====-----
-// interactive("open-nagioses","opens ysa nagioses",
-//     function(I){
-//         load_url_in_new_buffer("https://icinga.yourserveradmin.com/icinga/cgi-bin/status.cgi?host=all&servicestatustypes=28&sorttype=1&sortoption=6&hoststatustypes=3&serviceprops=2097162&nostatusheader",I.window);
-//         load_url_in_new_buffer("https://icinga-y.yourserveradmin.com/icinga/cgi-bin/status.cgi?host=all&servicestatustypes=28&sorttype=1&sortoption=6&hoststatustypes=3&serviceprops=2097162&nostatusheader",I.window);
-// });
-// define_key(content_buffer_normal_keymap, "f11", "open-nagioses");
-
-//-----=====-----
-// function disable_scrollbars (buffer) {
-//     buffer.top_frame.scrollbars.visible = false;
-// }
-// add_hook("create_buffer_late_hook", disable_scrollbars);
-
-//-----=====-----
-// function darken_page (I) {
-//     var styles='* { background: #212121 !important; color: #696969 !important; }'+
-//         ':link, :link * { color: #4986dd !important; }'+
-//         ':visited, :visited * { color: #d75047 !important; }';
-//     var document = I.buffer.document;
-//     var newSS=document.createElement('link');
-//     newSS.rel='stylesheet';
-//     newSS.href='data:text/css,'+escape(styles);
-//     document.getElementsByTagName("head")[0].appendChild(newSS);
-// }
-// interactive("darken-page", "Darken the page in an attempt to save your eyes.", darken_page);
-// define_key(content_buffer_normal_keymap, "C-d", "darken-page");
-
-// define_variable("firebug_url",
-//     "https://getfirebug.com/releases/lite/latest/firebug-lite.js");
-
-// //-----=====-----
-// function firebug (I) {
-//     var doc = I.buffer.document;
-//     var script = doc.createElement('script');
-//     script.setAttribute('type', 'text/javascript');
-//     script.setAttribute('src', firebug_url);
-//     script.setAttribute('onload', 'firebug.init();');
-//     doc.body.appendChild(script);
-// }
-// interactive("firebug", "open firebug lite", firebug);
-
 //-----=====-----
 define_browser_object_class(
     "tinyurl", "Get a tinyurl for the current page",
