@@ -1,0 +1,20 @@
+---
+- name: Install common packages
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - git-core
+    - python-dev
+    - python-pip
+    - python-pycurl
+    - python-apt
+    - htop
+    - bitlbee
+  sudo: yes
+
+- name: Get offlineimap, notmuch source files
+  git:
+    repo={{ item.repo }} accept_hostkey=yes
+    dest={{ mysrcpath|default('%s/src'|format(ansible_env.HOME)) }}/{{ item.name }}
+  with_items:
+    - { name: offlineimap, repo: 'git://github.com/OfflineIMAP/offlineimap.git' }
+    - { name: notmuch, repo: 'git://notmuchmail.org/git/notmuch' }

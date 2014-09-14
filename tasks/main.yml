@@ -24,6 +24,7 @@
     - myapps
     - files
 
+- include: common.yml
 - include: qtile.yml
 - include: conkeror.yml
 - include: emacs.yml
