@@ -1,4 +1,4 @@
-#+TITLE: Automate my environment setup
+#+TITLE: Orchestrate my workplace
 #+AUTHOR: Bakhti Aripov
 
 * Ansible
@@ -62,3 +62,52 @@ sudo apt-get update -qq
 sudo apt-get install emacs-snapshot
 #+END_SRC
 
+* Multiple configuration files
+
+I tend to break configuration files of some applications, like =conkeror= or =emacs=, into multiple files:
+
+#+BEGIN_SRC yaml
+- name: Conkeror config files
+  copy:
+    src=conkeror-{{ item }}
+    dest={{ '%s/.conkerorrc/'|format(ansible_env.HOME) }}{{ item }}
+  with_items:
+    - init.js
+    - webjumps.js
+    - functions.js
+#+END_SRC
+
+I could even probably have one =ansible= task for all programs, it's more complecated though:
+
+#+BEGIN_SRC yaml
+- name: Configuration files
+  copy:
+    src={{ item.0.name }}-{{ item.1 }}
+    dest={{ '%s/%s/%s'|format(ansible_env.HOME, item.0.cfgpath, item.1) }}
+    mode=0644
+  with_subelements:
+    - myapps
+    - files
+#+END_SRC
+
+And =myapps= list would look like this:
+
+#+BEGIN_SRC yaml
+    myapps:
+      - name: qtile
+        cfgpath: .config/qtile
+        files:
+          - config.py
+      - name: emacs
+        cfgpath: .emacs.d
+        files:
+          - init.el
+          - custom.el
+          - settings.el
+      - name: conkeror
+        cfgpath: .conkerorrc
+        files:
+          - init.js
+          - webjumps.js
+          - functions.js
+#+END_SRC
