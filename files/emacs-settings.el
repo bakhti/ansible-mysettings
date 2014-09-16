@@ -90,17 +90,17 @@
 (use-package multiple-cursors
   :pre-init
   (progn
-    (define-prefix-command 'bakhti/mc-map)
-    (define-key ctl-x-map "m" 'bakhti/mc-map)
-    (define-key bakhti/mc-map "l" 'mc/edit-lines)
-    (define-key bakhti/mc-map "e" 'mc/edit-ends-of-lines)
-    (define-key bakhti/mc-map "b" 'mc/edit-beginnings-of-lines)
-    (define-key bakhti/mc-map "n" 'mc/mark-next-like-this)
-    (define-key bakhti/mc-map "p" 'mc/mark-previous-like-this)
-    (define-key bakhti/mc-map "a" 'mc/mark-all-like-this)
-    (define-key bakhti/mc-map "c" 'mc/insert-numbers)
-    (define-key bakhti/mc-map "s" 'mc/sort-regions)
-    (define-key bakhti/mc-map "r" 'mc/reverse-regions)))
+    (define-prefix-command 'my/mc-map)
+    (define-key ctl-x-map "m" 'my/mc-map)
+    (define-key my/mc-map "l" 'mc/edit-lines)
+    (define-key my/mc-map "e" 'mc/edit-ends-of-lines)
+    (define-key my/mc-map "b" 'mc/edit-beginnings-of-lines)
+    (define-key my/mc-map "n" 'mc/mark-next-like-this)
+    (define-key my/mc-map "p" 'mc/mark-previous-like-this)
+    (define-key my/mc-map "a" 'mc/mark-all-like-this)
+    (define-key my/mc-map "c" 'mc/insert-numbers)
+    (define-key my/mc-map "s" 'mc/sort-regions)
+    (define-key my/mc-map "r" 'mc/reverse-regions)))
 
 (use-package ace-jump-mode
   :bind ("C-s-SPC" . ace-jump-mode))
@@ -221,8 +221,8 @@
   :mode ("\\.md\\'" . markdown-mode)
   :config  (setq markdown-command "markdown_py"))
 
-(use-package bakhti-functions
+(use-package my-functions
   :load-path "~/.emacs.d/lisp")
-(use-package bakhti-key-bindings
+(use-package my-key-bindings
   :load-path "~/.emacs.d/lisp")
 

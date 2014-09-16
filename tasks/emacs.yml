@@ -10,3 +10,21 @@
   apt: pkg=emacs-snapshot state=latest
   when: ansible_distribution == 'Ubuntu'
   sudo: yes
+
+- name: Install melpa packages
+  command: emacs -q -batch -l {{ ansible_env.HOME }}/.emacs.d/packages.el -kill
+  changed_when: False
+
+- name: Emacs lisp dir
+  file:
+    dest={{ ansible_env.HOME }}/.emacs.d/lisp
+    state=directory mode=0755
+
+- name: Parts of my old emacs configs
+  copy:
+    src=emacs-{{ item }}
+    dest={{ ansible_env.HOME }}/.emacs.d/lisp/{{ item }}
+    mode=0644
+  with_items:
+    - my-functions.el
+    - my-key-bindings.el
