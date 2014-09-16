@@ -2,13 +2,14 @@
 - name: Install common packages
   apt: pkg={{ item }} state=latest
   with_items:
+    - bitlbee
     - git-core
+    - htop
+    - python-apt
     - python-dev
     - python-pip
     - python-pycurl
-    - python-apt
-    - htop
-    - bitlbee
+    - python-sqlite
   sudo: yes
 
 - name: Get offlineimap, notmuch source files
@@ -18,3 +19,15 @@
   with_items:
     - { name: offlineimap, repo: 'git://github.com/OfflineIMAP/offlineimap.git' }
     - { name: notmuch, repo: 'git://notmuchmail.org/git/notmuch' }
+
+- name: Prepare OfflineImap package
+  shell: make clean; make
+    chdir={{ mysrcpath|default('%s/src'|format(ansible_env.HOME)) }}/offlineimap
+    creates=/usr/local/bin/offlineimap
+  register: offlineimap_installed
+
+- name: Install OfflineImap system-wide
+  shell: python setup.py install
+    chdir={{ mysrcpath|default('%s/src'|format(ansible_env.HOME)) }}/offlineimap
+  sudo: yes
+  when: offlineimap_installed|changed
