@@ -9,7 +9,6 @@
     - python-dev
     - python-pip
     - python-pycurl
-    - python-sqlite
   sudo: yes
 
 - name: Get offlineimap, notmuch source files
@@ -19,6 +18,9 @@
   with_items:
     - { name: offlineimap, repo: 'git://github.com/OfflineIMAP/offlineimap.git' }
     - { name: notmuch, repo: 'git://notmuchmail.org/git/notmuch' }
+
+- name: Install offlineimap dependencies
+  apt: pkg=python-sqlite state=latest
 
 - name: Prepare OfflineImap package
   shell: make clean; make
@@ -31,3 +33,30 @@
     chdir={{ mysrcpath|default('%s/src'|format(ansible_env.HOME)) }}/offlineimap
   sudo: yes
   when: offlineimap_installed|changed
+
+- name: Install notmuch dependecies
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - libgmime-2.6-dev
+    - libtalloc-dev
+    - libxapian-dev
+    - python-sphinx
+    - zlib1g-dev
+  sudo: yes
+
+- name: Prepare notmuch package
+  shell: make clean; ./configure --emacslispdir={{ ansible_env.HOME }}/.emacs.d/lisp --emacsetcdir={{ ansible_env.HOME }}/.emacs.d/lisp && make
+    chdir={{ mysrcpath|default('%s/src'|format(ansible_env.HOME)) }}/notmuch
+    creates=/usr/local/bin/notmuch
+  register: notmuch_installed
+
+- name: Install notmuch system-wide
+  shell: make install
+    chdir={{ mysrcpath|default('%s/src'|format(ansible_env.HOME)) }}/notmuch
+  sudo: yes
+  when: notmuch_installed|changed
+
+- name: Configure notmuch
+  template:
+    src=notmuch-config.j2
+    dest={{ ansible_env.HOME }}/.notmuch-config
