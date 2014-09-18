@@ -62,6 +62,14 @@ sudo apt-get update -qq
 sudo apt-get install emacs-snapshot
 #+END_SRC
 
+Install packages from =packages.el=
+
+#+BEGIN_SRC sh
+emacs -q -batch -l {$HOME}/.emacs.d/packages.el -kill
+#+END_SRC
+
+Packages from the list are installed only if not already available, so I'm not sure if I really need an additional function to test if there is any package not installed yet for =ansible=.
+
 * Multiple configuration files
 
 I tend to break configuration files of some applications, like =conkeror= or =emacs=, into multiple files:
@@ -110,4 +118,31 @@ And =myapps= list would look like this:
           - init.js
           - webjumps.js
           - functions.js
+#+END_SRC
+* Email
+
+Having Ansible tasks is convenient when you have some apps built from source and when this app has some requirement, so you can keep these tasks together to know that these packages were installed to build this particular app:
+
+#+BEGIN_SRC yaml
+- name: Install notmuch dependecies
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - libgmime-2.6-dev
+    - libtalloc-dev
+    - libxapian-dev
+    - python-sphinx
+    - zlib1g-dev
+  sudo: yes
+
+- name: Prepare notmuch package
+  shell: make clean; ./configure --emacslispdir={{ ansible_env.HOME }}/.emacs.d/lisp --emacsetcdir={{ ansible_env.HOME }}/.emacs.d/lisp && make
+    chdir={{ mysrcpath|default('%s/src'|format(ansible_env.HOME)) }}/notmuch
+    creates=/usr/local/bin/notmuch
+  register: notmuch_installed
+
+- name: Install notmuch system-wide
+  shell: make install
+    chdir={{ mysrcpath|default('%s/src'|format(ansible_env.HOME)) }}/notmuch
+  sudo: yes
+  when: notmuch_installed|changed
 #+END_SRC

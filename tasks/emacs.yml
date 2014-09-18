@@ -11,6 +11,7 @@
   when: ansible_distribution == 'Ubuntu'
   sudo: yes
 
+# The packages are installed only if not available.
 - name: Install melpa packages
   command: emacs -q -batch -l {{ ansible_env.HOME }}/.emacs.d/packages.el -kill
   changed_when: False
