@@ -12,11 +12,35 @@ Role Variables
 --------------
 
 ```yaml
-conkeror:
-  - path: /home/user/src
-  - desktop_dir: /home/user/.local/share/applications
-  - icon: /usr/share/icons/gnome/48x48/apps/web-browser.png 
-  - exec: conkeror
+---
+myfullname: John Smith
+myprimaryemail: jsmith@company.org
+mymailfolder: Mail
+myapps:
+  - name: qtile
+    cfgpath: .config/qtile
+    files:
+      - config.py
+  - name: emacs
+    cfgpath: .emacs.d
+    files:
+      - init.el
+      - custom.el
+      - settings.el
+      - packages.el
+  - name: conkeror
+    cfgpath: .conkerorrc
+    files:
+      - init.js
+      - webjumps.js
+      - functions.js
+myemail:
+  - name: account1
+    type: IMAP
+    ssl: yes
+    sslcacertfile: /etc/ssl/certs/ca-certificates.crt
+    remotehost: imap.company.org
+    remoteuser: my@company.org
 ```
 
 Dependencies
