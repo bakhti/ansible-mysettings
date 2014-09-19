@@ -40,6 +40,11 @@
     dest={{ ansible_env.HOME }}/bin/offlineimap.py
     mode=0644
 
+- name: Configure offlineimap
+  template:
+    src=offlineimaprc.j2
+    dest={{ ansible_env.HOME }}/.offlineimaprc
+
 - name: Install notmuch dependecies
   apt: pkg={{ item }} state=latest
   with_items:

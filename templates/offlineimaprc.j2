@@ -1,0 +1,23 @@
+[general]
+accounts = {{ myemail|join(' ', attribute='name') }}
+
+{% for accn in myemail %}
+[Account {{ accn.name }}]
+status_backend = sqlite
+localrepository = {{ accn.name }}_local
+remoterepository = {{ accn.name }}_remote
+
+[Repository {{ accn.name }}_local]
+type = Maildir
+localfolders = {{ '%s/%s'|format(ansible_env.HOME, accn.name) }}
+
+[Repository {{ accn.name }}_remote]
+type = {{ accn.type }}
+{% if accn.ssl is defined %}
+ssl = {{ accn.ssl }}
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+{% endif %}
+remotehost = {{ accn.remotehost }}
+remoteuser = {{ accn.remoteuser }}
+
+{% endfor %}
