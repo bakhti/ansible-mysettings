@@ -1,8 +1,11 @@
 ---
-- name: My sources dir is available
+- name: A couple of 1st level dirs in my home
   file:
-    dest={{ mysrcpath|default('%s/src'|format(ansible_env.HOME)) }}
+    dest={{ mysrcpath|default('%s/%s'|format(ansible_env.HOME, item)) }}
     state=directory mode=0755
+  with_items:
+    - src
+    - bin
 
 - name: Config dirs available
   file:

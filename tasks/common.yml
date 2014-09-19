@@ -34,6 +34,12 @@
   sudo: yes
   when: offlineimap_installed|changed
 
+- name: Custom scripts for offlineimap
+  copy:
+    src=offlineimap.py
+    dest={{ ansible_env.HOME }}/bin/offlineimap.py
+    mode=0644
+
 - name: Install notmuch dependecies
   apt: pkg={{ item }} state=latest
   with_items:
