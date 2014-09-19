@@ -1,7 +1,16 @@
 [database]
-path={{ ansible_env.HOME }}/Mail
+path={{ ansible_env.HOME }}/{{ mymailfolder }}
+
+[user]
+name={{ myfullname }}
+primary_email={{ myprimaryemail }}
+
 [new]
-tags=unread;inbox
+tags=unread;inbox;
 ignore=
+
 [search]
-exclude_tags=deleted;spam
+exclude_tags=deleted;spam;
+
+[maildir]
+synchronize_flags=true

@@ -1,4 +1,7 @@
 ---
+myfullname: John Smith
+myprimaryemail: jsmith@company.org
+mymailfolder: Mail
 myapps:
   - name: qtile
     cfgpath: .config/qtile
