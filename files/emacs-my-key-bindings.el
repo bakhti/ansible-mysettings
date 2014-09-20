@@ -22,12 +22,29 @@
 (global-set-key (kbd "M-t p") 'transpose-params)
 
 (define-prefix-command 'my/toggle-map)
-;; The manual recommends C-c for user keys, but I like using C-x for global keys and using C-c for mode-specific keys.
-(define-key ctl-x-map "t" 'my/toggle-map)
-(define-key my/toggle-map "r" 'read-only-mode)
+(global-set-key (kbd "\e\et") 'my/toggle-map)
+(define-key my/toggle-map "f" 'toggle-frame-fullscreen)
 (define-key my/toggle-map "l" 'toggle-truncate-lines)
+(define-key my/toggle-map "m" 'toggle-menu-bar-mode-from-frame)
 (define-key my/toggle-map "o" 'org-mode)
+(define-key my/toggle-map "r" 'read-only-mode)
 (define-key my/toggle-map "v" 'visual-line-mode)
+(define-key my/toggle-map "w" 'toggle-word-wrap)
+
+(define-prefix-command 'my/launcher-map)
+(global-set-key (kbd "\e\el") 'my/launcher-map)
+(define-key my/launcher-map "G" #'rgrep)
+(define-key my/launcher-map "c" #'calc)
+(define-key my/launcher-map "d" #'ediff-buffers)
+(define-key my/launcher-map "f" #'find-dired)
+(define-key my/launcher-map "g" #'lgrep)
+(define-key my/launcher-map "h" #'woman)
+(define-key my/launcher-map "i" #'package-install-from-buffer)
+(define-key my/launcher-map "n" #'nethack)
+(define-key my/launcher-map "o" #'sort-lines)
+(define-key my/launcher-map "p" #'package-list-packages)
+(define-key my/launcher-map "s" #'eshell)
+(define-key my/launcher-map "t" #'proced)
 
 ;; Should be able to eval-and-replace anywhere.
 (global-set-key (kbd "C-c C-e") 'my/eval-and-replace)

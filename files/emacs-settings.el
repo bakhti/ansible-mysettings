@@ -20,7 +20,7 @@
   (setq guide-key-mode t
 	guide-key/guide-key-sequence
 	(quote
-	 ("C-x r" "C-x n" "C-x 4" "C-x v" "C-x 8" "C-c p" "C-x t" "C-x m" "C-c i"))
+	 ("C-x r" "C-x n" "C-x 4" "C-x v" "C-x 8" "C-c p" "C-c i" "\e\e\m" "\e\et" "\e\el"))
 	guide-key/popup-window-position 'bottom
 	guide-key/recursive-key-sequence-flag t))
 
@@ -91,7 +91,7 @@
   :pre-init
   (progn
     (define-prefix-command 'my/mc-map)
-    (define-key ctl-x-map "m" 'my/mc-map)
+    (global-set-key (kbd "\e\em") 'my/mc-map)
     (define-key my/mc-map "l" 'mc/edit-lines)
     (define-key my/mc-map "e" 'mc/edit-ends-of-lines)
     (define-key my/mc-map "b" 'mc/edit-beginnings-of-lines)
@@ -119,7 +119,7 @@
   :config (setq projectile-mode-line (quote (:eval (format " Πρ[%s]" (projectile-project-name))))))
 
 (use-package magit
-  :bind ("\e\em" . magit-status)
+  :bind ("\e\eg" . magit-status)
   :init (add-hook 'magit-mode-hook  '(lambda () (hl-line-mode)))
   :config
   (progn
