@@ -23,7 +23,12 @@ myapps:
 myemail:
   - name: account1
     type: IMAP
-    ssl: yes
-    sslcacertfile: /etc/ssl/certs/ca-certificates.crt
+    ssl: 'no'
+    sslcacertfile: "{{ ansible_env.HOME }}/.certs/imap.company.org.crt"
     remotehost: imap.company.org
     remoteuser: my@company.org
+  - name: account2
+    type: Gmail
+    ssl: 'yes'
+    sslcacertfile: /etc/ssl/certs/ca-certificates.crt
+    remoteuser: my@gmail.com

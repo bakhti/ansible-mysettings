@@ -20,8 +20,12 @@
     - { name: notmuch, repo: 'git://notmuchmail.org/git/notmuch' }
 
 - name: Install offlineimap dependencies
-  apt: pkg=python-sqlite state=latest
-
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - python-sqlite
+    - gnupg-agent
+  sudo: yes
+    
 - name: Prepare OfflineImap package
   shell: make clean; make
     chdir={{ mysrcpath|default('%s/src'|format(ansible_env.HOME)) }}/offlineimap

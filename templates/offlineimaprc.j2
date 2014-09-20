@@ -1,23 +1,37 @@
 [general]
-accounts = {{ myemail|join(' ', attribute='name') }}
+accounts = {{ myemail|join(',', attribute='name') }}
+pythonfile = {{ ansible_env.HOME }}/bin/offlineimap.py
 
 {% for accn in myemail %}
 [Account {{ accn.name }}]
 status_backend = sqlite
 localrepository = {{ accn.name }}_local
 remoterepository = {{ accn.name }}_remote
+{% if accn.ignorelabels is defined %}
+ignorelabels = {{ accn.ignorelabels }}
+{% endif %}
 
+{% endfor %}
+{% for accn in myemail %}
 [Repository {{ accn.name }}_local]
+{% if accn.type == 'Gmail' %}
+type = GmailMaildir
+{% else %}
 type = Maildir
+{% endif %}
 localfolders = {{ '%s/%s'|format(ansible_env.HOME, accn.name) }}
 
 [Repository {{ accn.name }}_remote]
 type = {{ accn.type }}
 {% if accn.ssl is defined %}
 ssl = {{ accn.ssl }}
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+sslcacertfile = {{ accn.sslcacertfile }}
 {% endif %}
+{% if accn.type != 'Gmail' %}
 remotehost = {{ accn.remotehost }}
-remoteuser = {{ accn.remoteuser }}
+remotepasseval = get_authinfo_password("{{ accn.remotehost }}", "{{ accn.remoteuser}}", 993)
+{% else %}
+remotepasseval = get_authinfo_password("imap.gmail.com", "{{ accn.remoteuser}}", 993)
+{% endif %}
 
 {% endfor %}
