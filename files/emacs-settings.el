@@ -221,6 +221,9 @@
   :mode ("\\.md\\'" . markdown-mode)
   :config  (setq markdown-command "markdown_py"))
 
+(use-package notmuch
+  :load-path "~/.emacs.d/lisp")
+
 (use-package my-functions
   :load-path "~/.emacs.d/lisp")
 (use-package my-key-bindings
