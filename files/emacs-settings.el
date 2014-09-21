@@ -222,7 +222,13 @@
   :config  (setq markdown-command "markdown_py"))
 
 (use-package notmuch
-  :load-path "~/.emacs.d/lisp")
+  :load-path "~/.emacs.d/lisp"
+  :config
+  (progn
+    (define-key notmuch-show-mode-map "d"
+      (lambda ()
+	(interactive)
+	(notmuch-show-tag "+deleted")))))
 
 (use-package my-functions
   :load-path "~/.emacs.d/lisp")
