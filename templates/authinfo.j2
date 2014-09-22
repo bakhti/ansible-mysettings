@@ -1,0 +1,3 @@
+{% for accn in myemail %}
+machine {% if accn.type == 'Gmail' %}imap.gmail.com{% else %}{{ accn.remotehost }}{% endif %} login {{ accn.remoteuser }} port 993 password
+{% endfor %}

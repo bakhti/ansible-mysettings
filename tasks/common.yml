@@ -11,6 +11,11 @@
     - python-pycurl
   sudo: yes
 
+- name: My personal netrc file
+  template:
+    src=authinfo.j2 mode=0600
+    dest={{ ansible_env.HOME }}/.authinfo
+
 - name: Get offlineimap, notmuch source files
   git:
     repo={{ item.repo }} accept_hostkey=yes
@@ -46,7 +51,7 @@
 
 - name: Configure offlineimap
   template:
-    src=offlineimaprc.j2
+    src=offlineimaprc.j2 mode=0600
     dest={{ ansible_env.HOME }}/.offlineimaprc
 
 - name: Install notmuch dependecies
@@ -73,5 +78,5 @@
 
 - name: Configure notmuch
   template:
-    src=notmuch-config.j2
+    src=notmuch-config.j2 mode=0600
     dest={{ ansible_env.HOME }}/.notmuch-config
