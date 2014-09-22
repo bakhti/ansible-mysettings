@@ -4,6 +4,7 @@ path={{ ansible_env.HOME }}/{{ mymailfolder }}
 [user]
 name={{ myfullname }}
 primary_email={{ myprimaryemail }}
+other_email={{ myemail|join(';', attribute='remoteuser') }}
 
 [new]
 tags=unread;inbox;

@@ -225,10 +225,20 @@
   :load-path "~/.emacs.d/lisp"
   :config
   (progn
-    (define-key notmuch-show-mode-map "d"
+    (setq notmuch-search-oldest-first nil)
+    (define-key notmuch-search-mode-map "D"
       (lambda ()
 	(interactive)
-	(notmuch-show-tag "+deleted")))))
+	(if (member "deleted" (notmuch-search-get-tags))
+	    (notmuch-search-tag '("-deleted"))
+	  (notmuch-search-tag '("+deleted" "-unread")))
+	(next-line)))
+    (define-key notmuch-show-mode-map "D"
+      (lambda ()
+	(interactive)
+	(if (member "deleted" (notmuch-show-get-tags))
+	    (notmuch-show-tag '("-deleted"))
+	  (notmuch-show-tag '("+deleted" "-unread")))))))
 
 (use-package my-functions
   :load-path "~/.emacs.d/lisp")
