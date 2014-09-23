@@ -1,6 +1,5 @@
 ---
 myfullname: John Smith
-myprimaryemail: jsmith@company.org
 mymailfolder: Mail
 myapps:
   - name: qtile
@@ -27,6 +26,7 @@ myemail:
     sslcacertfile: "{{ ansible_env.HOME }}/.certs/imap.company.org.crt"
     remotehost: imap.company.org
     remoteuser: my@company.org
+    primary: yes
   - name: account2
     type: Gmail
     ssl: 'yes'

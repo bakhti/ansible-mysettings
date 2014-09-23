@@ -14,7 +14,6 @@ Role Variables
 ```yaml
 ---
 myfullname: John Smith
-myprimaryemail: jsmith@company.org
 mymailfolder: Mail
 myapps:
   - name: qtile
@@ -41,6 +40,7 @@ myemail:
     sslcacertfile: /etc/ssl/certs/ca-certificates.crt
     remotehost: imap.company.org
     remoteuser: my@company.org
+	primary: yes
 ```
 
 Dependencies

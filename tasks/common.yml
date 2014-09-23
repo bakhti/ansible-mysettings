@@ -23,6 +23,7 @@
   with_items:
     - { name: offlineimap, repo: 'git://github.com/OfflineIMAP/offlineimap.git' }
     - { name: notmuch, repo: 'git://notmuchmail.org/git/notmuch' }
+  ignore_errors: yes
 
 - name: Install offlineimap dependencies
   apt: pkg={{ item }} state=latest

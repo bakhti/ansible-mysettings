@@ -3,8 +3,9 @@ path={{ ansible_env.HOME }}/{{ mymailfolder }}
 
 [user]
 name={{ myfullname }}
-primary_email={{ myprimaryemail }}
-other_email={{ myemail|join(';', attribute='remoteuser') }}
+primary_email={% for acct in myemail %}{% if acct.primary is defined %}{{ acct.remoteuser }}
+{% endif %}{% endfor %}
+other_email={{ myemail|selectattr('primary', 'undefined')|join(';', attribute='remoteuser') }}
 
 [new]
 tags=unread;inbox;
