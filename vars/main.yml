@@ -1,4 +1,5 @@
 ---
+# This file should be encripted using ansible-vault
 myfullname: John Smith
 mymailfolder: Mail
 myapps:
@@ -26,9 +27,11 @@ myemail:
     sslcacertfile: "{{ ansible_env.HOME }}/.certs/imap.company.org.crt"
     remotehost: imap.company.org
     remoteuser: my@company.org
+    remotepass: mypass1
     primary: yes
   - name: account2
     type: Gmail
     ssl: 'yes'
     sslcacertfile: /etc/ssl/certs/ca-certificates.crt
     remoteuser: my@gmail.com
+    remotepass: mypass2
