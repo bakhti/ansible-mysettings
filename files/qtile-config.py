@@ -128,7 +128,8 @@ layouts = [
 float_windows = set([
     "nagstamon.py"
     "feh",
-    "x11-ssh-askpass"
+    "x11-ssh-askpass",
+    "pinentry"
 ])
 
 # wm_window_role: PasswordManager, Preferences
