@@ -188,6 +188,19 @@
 
 ))
 
+(use-package ruby-mode
+  :mode (("\\.rb\\'" . ruby-mode)
+	 ("Vagrantfile\\'" . ruby-mode)
+	 ("Berksfile\\'" . ruby-mode))
+  :interpreter ("ruby" . ruby-mode)
+  :config
+  (progn
+    (use-package yari)
+    (defun my-ruby-mode-hook ()
+      (require 'inf-ruby)
+      (inf-ruby-keys))
+    (add-hook 'ruby-mode-hook 'my-ruby-mode-hook)))
+
 (use-package ispell
   :disabled t
   :bind (("C-c i c" . ispell-comments-and-strings)

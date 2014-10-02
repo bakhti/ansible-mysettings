@@ -25,6 +25,9 @@
     expand-region ido-ubiquitous ido-vertical-mode flx-ido projectile
     ace-jump-mode ace-window multiple-cursors
 
+    ;; ruby
+    inf-ruby yari
+
     ;; markup language
     markdown-mode yaml-mode
 
