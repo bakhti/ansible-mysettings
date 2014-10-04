@@ -1,37 +1,42 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from libqtile.config import Key, Group, Click, Drag, Screen, Match
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
-try:
-    from libqtile.manager import Key, Group
-except ImportError:
-    from libqtile.config import Key, Group
 
-from libqtile.manager import Click, Drag, Screen
-
-screens = [Screen(top = bar.Bar(
-    [
-        widget.GroupBox(margin_y = 1,
-                        margin_x = 1,
-                        borderwidth = 1,
-                        padding = 1,),
-        widget.Prompt(),
-        widget.Sep(),
-        widget.Volume(),
-        widget.Battery(energy_now_file = "charge_now",
-                       energy_full_file = "charge_full",
-                       power_now_file = "current_now",
-                       update_delay = 5,
-                       foreground = "7070ff",
-                       charge_char = u'↑',
-                       discharge_char = u'↓',),
-        widget.CurrentLayout(),
-        widget.Sep(),
-        widget.Systray(),
-        widget.Clock(foreground = "a0a0a0",
-                     fmt = "%a, %d %b %H:%M",),
-    ], 24,),),
+screens = [
+    Screen(
+        top = bar.Bar(
+            widgets = [
+                widget.GroupBox(
+                    highlight_method='block', 
+                    margin_y = 1,
+                    margin_x = 1,
+                    borderwidth = 1,
+                    padding = 1),
+                widget.Prompt(),
+                widget.Spacer(),
+                widget.Volume(),
+                widget.Battery(energy_now_file = "charge_now",
+                               energy_full_file = "charge_full",
+                               power_now_file = "current_now",
+                               update_delay = 5,
+                               foreground = "7070ff",
+                               charge_char = u'↑',
+                               discharge_char = u'↓'),
+                widget.Sep(padding = 5),
+                widget.CurrentLayout(),
+                widget.Sep(padding = 5),
+                widget.Systray(icon_size = 24,
+                               padding = 6),
+                widget.Sep(padding = 5),
+                widget.Clock(foreground = "a0a0a0",
+                             fmt = "%a, %d %b %H:%M"),
+            ],
+            size = 26,
+        ),
+    ),
 ]
 
 # Commands to spawn
