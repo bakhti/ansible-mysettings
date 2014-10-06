@@ -28,6 +28,12 @@
   :diminish "ed"
   :config (setq eldoc-idle-delay 0.2))
 
+(use-package erc
+  :config
+  (progn
+    (setq erc-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE")
+	  erc-track-exclude-types (append '("KICK" "324" "329" "332" "333" "353" "477") erc-hide-list))))
+
 (use-package moe-theme
   :init (moe-dark))
 
