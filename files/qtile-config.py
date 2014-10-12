@@ -45,7 +45,7 @@ class Commands(object):
     dmenu = 'dmenu_run -i -b -p ">>>" -fn "-*-fixed-*-*-*-*-18-*-*-*-*-*-*-*" -nb "#15181a" -nf "#fff" -sb "#333" -sf "#fff"'
     file_manager = 'nautilus --no-desktop'
     lock_screen = 'mate-screensaver-command -l'
-    screenshot = 'mate-screenshot'
+    screenshot = 'shutter --min_at_startup'
     terminal = 'POWERLINE_CONFIG_COMMAND=${HOME}/.local/bin/powerline-config stterm -f "Source Code Pro for Powerline:pixelsize=15" -e tmux'
     trackpad_toggle = 'xinput set-int-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 8 $(xinput list-props "SynPS/2 Synaptics TouchPad" |grep -c "Device Enabled.*0$")'
     volume_up = 'amixer -q -c 1 sset Master 5dB+'
@@ -86,6 +86,8 @@ keys = [
     Key([mod], 'e', lazy.spawn(Commands.file_manager)),
     Key([mod], 'Return', lazy.spawn(Commands.terminal)),
 
+    Key([], 'Print', lazy.spawn(Commands.screenshot)),
+
     # Commands: Volume Controls
     Key([], 'XF86AudioRaiseVolume', lazy.spawn(Commands.volume_up)),
     Key([], 'XF86AudioLowerVolume', lazy.spawn(Commands.volume_down)),
@@ -95,6 +97,7 @@ keys = [
     Key([], 'XF86MonBrightnessUp', lazy.spawn(Commands.light_up)),
     Key([], 'XF86MonBrightnessDown', lazy.spawn(Commands.light_down)),
     # TODO: make the following key switchable - LVDS1 only / additional head
+    # xrandr --output HDMI1 --off --output LVDS1 --auto
     Key([], 'XF86Display', lazy.spawn(Commands.head_toggle)),
 ]
 
@@ -128,6 +131,8 @@ layouts = [
     layout.Max(),
     layout.Stack(stacks=2, border_width=1),
     layout.Tile(ratio=0.25),
+    layout.RatioTile(),
+    layout.Matrix(), 
 ]
 
 float_windows = set([
@@ -153,3 +158,12 @@ def should_be_floating(w):
 def dialogs(window):
     if should_be_floating(window.window):
         window.floating = True
+
+@hook.subscribe.client_new
+def client_new_hook(window):
+    if window.match(wname="Nagstamon"):
+        window.enablefloating()
+        window.x = 670
+        window.y = 400
+        window.width = 580
+        window.height = 17

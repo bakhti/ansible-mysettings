@@ -5,10 +5,12 @@
     - bitlbee
     - git-core
     - htop
+    - parcellite
     - python-apt
     - python-dev
     - python-pip
     - python-pycurl
+    - shutter
   sudo: yes
 
 - name: My personal netrc file
