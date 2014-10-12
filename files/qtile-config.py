@@ -79,6 +79,10 @@ keys = [
     # interact with prompts
     Key([mod], "r",              lazy.spawncmd()),
     Key([mod], "g",              lazy.switchgroup()),
+    Key([mod], 's',
+        lazy.spawncmd(prompt='Slack Team',
+                      command='google-chrome --app=https://%s.slack.com/',
+                      complete=None)),
 
     # Commands: Application Launchers
     Key([mod], 'space', lazy.spawn(Commands.dmenu)),
