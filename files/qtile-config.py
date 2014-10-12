@@ -102,8 +102,8 @@ keys = [
     Key([alt], 'Tab',             lazy.nextlayout()),
 
     # interact with prompts
-    Key([mod], "r",              lazy.spawncmd()),
-    Key([mod], "g",              lazy.switchgroup()),
+    Key([mod], 'r',              lazy.spawncmd()),
+    Key([mod], 'g',              lazy.switchgroup()),
     Key([mod], 's',
         lazy.spawncmd(prompt='Slack Team',
                       command='google-chrome --app=https://%s.slack.com/',
@@ -160,8 +160,7 @@ layouts = [
     layout.Max(),
     layout.Stack(stacks=2, border_width=1),
     layout.Tile(ratio=0.25),
-    layout.RatioTile(),
-    layout.Matrix(), 
+    layout.MonadTall(), 
 ]
 
 float_windows = set([
@@ -189,10 +188,13 @@ def dialogs(window):
         window.floating = True
 
 @hook.subscribe.client_new
-def client_new_hook(window):
-    if window.match(wname="Nagstamon"):
-        window.enablefloating()
+def nagstamon(window):
+    if window.match(wname="nagstamon.py"):
         window.x = 670
         window.y = 400
-        window.width = 580
+        window.width = 45
         window.height = 17
+
+@hook.subscribe.screen_change
+def restart_on_randr(qtile, ev):
+    qtile.cmd_restart()
