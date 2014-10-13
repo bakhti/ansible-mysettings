@@ -1,58 +1,66 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from libqtile.config import Key, Group, Click, Drag, Screen, Match
+from libqtile.config import Key, Group, Click, Drag, Screen
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 
 screens = [
     Screen(
-        top = bar.Bar(
-            widgets = [
+        top=bar.Bar(
+            widgets=[
                 widget.GroupBox(
-                    highlight_method='block', 
-                    margin_y = 1,
-                    margin_x = 1,
-                    borderwidth = 1,
-                    padding = 1),
+                    highlight_method='block',
+                    margin_y=1,
+                    margin_x=1,
+                    borderwidth=1,
+                    padding=1),
                 widget.Prompt(),
                 widget.Spacer(),
                 widget.Volume(),
-                widget.Battery(energy_now_file = "charge_now",
-                               energy_full_file = "charge_full",
-                               power_now_file = "current_now",
-                               update_delay = 5,
-                               foreground = "7070ff",
-                               charge_char = u'↑',
-                               discharge_char = u'↓'),
-                widget.Sep(padding = 5),
+                widget.Battery(energy_now_file="charge_now",
+                               energy_full_file="charge_full",
+                               power_now_file="current_now",
+                               update_delay=5,
+                               foreground="7070ff",
+                               charge_char=u'↑',
+                               discharge_char=u'↓'),
+                widget.Sep(padding=5),
                 widget.CurrentLayout(),
-                widget.Sep(padding = 5),
-                widget.Systray(icon_size = 24,
-                               padding = 6),
-                widget.Sep(padding = 5),
-                widget.Clock(foreground = "a0a0a0",
-                             fmt = "%a, %d %b %H:%M"),
+                widget.Sep(padding=5),
+                widget.Systray(icon_size=24,
+                               padding=6),
+                widget.Sep(padding=5),
+                widget.Clock(foreground="a0a0a0",
+                             fmt="%a, %d %b %H:%M"),
             ],
-            size = 26,
+            size=26,
         ),
     ),
 ]
 
+
 # Commands to spawn
 class Commands(object):
     browser = 'conkeror'
-    dmenu = 'dmenu_run -i -b -p ">>>" -fn "-*-fixed-*-*-*-*-18-*-*-*-*-*-*-*" -nb "#15181a" -nf "#fff" -sb "#333" -sf "#fff"'
+    dmenu = ('dmenu_run -i -b -p ">>>" '
+             '-fn "-*-fixed-*-*-*-*-18-*-*-*-*-*-*-*" '
+             '-nb "#15181a" -nf "#fff" -sb "#333" -sf "#fff"')
     file_manager = 'nautilus --no-desktop'
     lock_screen = 'mate-screensaver-command -l'
     screenshot = 'shutter --min_at_startup'
-    terminal = 'POWERLINE_CONFIG_COMMAND=${HOME}/.local/bin/powerline-config stterm -f "Source Code Pro for Powerline:pixelsize=15" -e tmux'
-    trackpad_toggle = 'xinput set-int-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 8 $(xinput list-props "SynPS/2 Synaptics TouchPad" |grep -c "Device Enabled.*0$")'
-    volume_up = 'amixer -q -c 1 sset Master 5dB+'
-    volume_down = 'amixer -q -c 1 sset Master 5dB-'
+    terminal = ('POWERLINE_CONFIG_COMMAND=${HOME}/.local/bin/powerline-config '
+                'stterm -f "Source Code Pro for Powerline:pixelsize=15" '
+                '-e tmux')
+    trackpad_toggle = ('xinput set-int-prop "SynPS/2 Synaptics TouchPad" '
+                       '"Device Enabled" 8 $(xinput list-props '
+                       '"SynPS/2 Synaptics TouchPad" '
+                       '|grep -c "Device Enabled.*0$")')
+    volume_up = 'amixer -q -c 0 sset Master 5dB+'
+    volume_down = 'amixer -q -c 0 sset Master 5dB-'
     volume_toggle = 'amixer -q -D pulse sset Master 1+ toggle'
-    light_up =  'xbacklight -inc 30'
-    light_down =  'xbacklight -dec 30'
+    light_up = 'xbacklight -inc 30'
+    light_down = 'xbacklight -dec 30'
     head_toggle = 'xrandr --output HDMI1 --right-of LVDS1 --auto'
 
 mod = 'mod4'
@@ -131,13 +139,11 @@ keys = [
 ]
 
 # This allows you to drag windows around with the mouse if you want.
-mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(),
-        start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(),
-        start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front())
-]
+mouse = [Drag([mod], "Button1", lazy.window.set_position_floating(),
+              start=lazy.window.get_position()),
+         Drag([mod], "Button3", lazy.window.set_size_floating(),
+              start=lazy.window.get_size()),
+         Click([mod], "Button2", lazy.window.bring_to_front())]
 
 group_names = [
     ("emacs", {'layout': 'max'}),
@@ -156,19 +162,16 @@ for index, (grp, kwargs) in enumerate(group_names, 1):
         Key([mod, "control"], str(index), lazy.group.swap_groups(grp))
     ])
 
-layouts = [
-    layout.Max(),
-    layout.Stack(stacks=2, border_width=1),
-    layout.Tile(ratio=0.25),
-    layout.MonadTall(), 
-]
+layouts = [layout.Max(),
+           layout.Stack(stacks=2, border_width=1),
+           layout.Tile(ratio=0.25),
+           layout.MonadTall()]
 
-float_windows = set([
-    "nagstamon.py"
-    "feh",
-    "x11-ssh-askpass",
-    "pinentry"
-])
+float_windows = set(["nagstamon.py"
+                     "feh",
+                     "x11-ssh-askpass",
+                     "pinentry"])
+
 
 # wm_window_role: PasswordManager, Preferences
 def should_be_floating(w):
@@ -182,10 +185,12 @@ def should_be_floating(w):
             return True
     return w.get_wm_type() == 'dialog' or bool(w.get_wm_transient_for())
 
+
 @hook.subscribe.client_new
 def dialogs(window):
     if should_be_floating(window.window):
         window.floating = True
+
 
 @hook.subscribe.client_new
 def nagstamon(window):
@@ -194,6 +199,7 @@ def nagstamon(window):
         window.y = 400
         window.width = 45
         window.height = 17
+
 
 @hook.subscribe.screen_change
 def restart_on_randr(qtile, ev):
