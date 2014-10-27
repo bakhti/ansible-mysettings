@@ -1,5 +1,15 @@
 (diminish 'isearch-mode (string 32 #xf06e))
 
+(use-package company
+  :diminish ""
+  :config
+  (progn
+    (setq company-idle-delay 0.2
+          ;; min prefix of 3 chars
+          company-minimum-prefix-length 3
+          company-dabbrev-downcase nil)
+    (add-hook 'prog-mode-hook 'global-company-mode)))
+
 (use-package dired
   :bind ("C-x C-j" . dired-jump)
   :config
@@ -32,7 +42,8 @@
   :config
   (progn
     (setq erc-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE")
-	  erc-track-exclude-types (append '("KICK" "324" "329" "332" "333" "353" "477") erc-hide-list))))
+	  erc-track-exclude-types (append '("KICK" "324" "329" "332" "333" "353" "477") erc-hide-list)
+	  erc-prompt-for-password nil)))
 
 (use-package moe-theme
   :init (moe-dark))
