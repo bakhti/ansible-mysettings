@@ -1,6 +1,7 @@
 ;; initalize all ELPA packages
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives
+	     '("melpa-stable" . "http://melpa.org/packages/") t)
 (package-initialize)
 (setq package-enable-at-startup nil)
 

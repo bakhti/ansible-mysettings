@@ -2,7 +2,7 @@
 (require 'package)
 (setq package-user-dir (concat user-emacs-directory "elpa"))
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/"))
+             '("melpa-stable" . "http://melpa.org/packages/") t)
 (package-initialize)
 
 (package-refresh-contents)
