@@ -128,6 +128,10 @@
     (global-set-key [remap other-window] 'ace-window)
     (setq aw-scope 'frame)))
 
+(use-package aggressive-indent
+  :config
+  (add-hook 'prog-mode-hook 'aggressive-indent-mode))
+
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
 
@@ -274,4 +278,3 @@
   :load-path "~/.emacs.d/lisp")
 (use-package my-key-bindings
   :load-path "~/.emacs.d/lisp")
-

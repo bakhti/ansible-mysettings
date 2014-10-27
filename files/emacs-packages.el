@@ -23,7 +23,7 @@
 
     ;; editing utilities
     expand-region ido-ubiquitous ido-vertical-mode flx-ido projectile
-    ace-jump-mode ace-window multiple-cursors
+    aggressive-indent ace-jump-mode ace-window multiple-cursors
 
     ;; ruby
     inf-ruby yari
