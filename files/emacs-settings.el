@@ -49,60 +49,66 @@
   :init (moe-dark))
 
 (use-package ido
-  :init (ido-mode t)
+  :init (progn
+	  (ido-mode)
+	  (ido-everywhere))
   :config
   (setq ido-auto-merge-work-directories-length nil
 	ido-case-fold nil
 	ido-create-new-buffer 'always
 	ido-enable-flex-matching t
-	ido-max-prospects 10))
+	ido-max-prospects 10
+	ido-use-faces nil))
 
 (use-package flx-ido
-  :init (flx-ido-mode t)
-  :config (setq ido-use-faces nil))
+  :ensure t
+  :init (flx-ido-mode))
 
 (use-package ido-vertical-mode
-  :init (ido-vertical-mode t))
+  :ensure t
+  :init (ido-vertical-mode))
 
-(use-package ido-ubiquitous)
+(use-package ido-ubiquitous
+  :ensure t
+  :init (ido-ubiquitous-mode))
 
 (use-package ibuffer
-  :bind ("C-x C-b" . ibuffer)
+  :bind (([remap list-buffers] . ibuffer))
   :init
   (add-hook 'ibuffer-mode-hook
 	    #'(lambda ()
 		(ibuffer-switch-to-saved-filter-groups "default")))
   :config
   (setq ibuffer-saved-filter-groups
-   (quote
-    (("default"
-      ("Dired"
-       (mode . dired-mode))
-      ("Scripts"
-       (or
-	(mode . emacs-lisp-mode)
-	(mode . lisp-mode)
-	(mode . python-mode)
-	(mode . yaml-mode)
-	(mode . conf-mode)
-	(mode . ruby-mode)
-	(mode . sh-mode)
-	(mode . tex-mode)
-	(mode . latex-mode)
-	(mode . js-mode)
-	(mode . javascript-mode)
-	(mode . json-mode)
-	(mode . magit-mode)
-	(mode . jinja2-mode)
-	(name . "*magit")))
-      ("Documents"
-       (or
-	(mode . org-mode)
-	(mode . markdown-mode)
-	(name . "^\\*Calendar\\*$")
-	(name . "^\\*info\\*$")
-	(name . "^\\*Help\\*$")
-	(name . "^diary$"))))))))
+	(quote
+	 (("default"
+	   ("Dired"
+	    (mode . dired-mode))
+	   ("Scripts"
+	    (or
+	     (mode . emacs-lisp-mode)
+	     (mode . lisp-mode)
+	     (mode . python-mode)
+	     (mode . yaml-mode)
+	     (mode . conf-mode)
+	     (mode . ruby-mode)
+	     (mode . sh-mode)
+	     (mode . tex-mode)
+	     (mode . latex-mode)
+	     (mode . js-mode)
+	     (mode . javascript-mode)
+	     (mode . json-mode)
+	     (mode . magit-mode)
+	     (mode . jinja2-mode)
+	     (name . "*magit")))
+	   ("Documents"
+	    (or
+	     (mode . org-mode)
+	     (mode . markdown-mode)
+	     (name . "^\\*Calendar\\*$")
+	     (name . "^\\*info\\*$")
+	     (name . "^\\*Help\\*$")
+	     (name . "^diary$"))))))))
 
 (use-package multiple-cursors
   :pre-init
@@ -196,7 +202,7 @@
        (ruby . t)
        (python . t)
        (emacs-lisp . t)))
-        ;; ensure this variable is defined
+    ;; ensure this variable is defined
     (unless (boundp 'org-babel-default-header-args:sh)
       (setq org-babel-default-header-args:sh '()))
     ;; add a default shebang header argument shell scripts
@@ -205,9 +211,9 @@
     ;; add a default shebang header argument for python
     (add-to-list 'org-babel-default-header-args:python
                  '(:shebang . "#!/usr/bin/env python"))
-;    (add-hook 'org-mode-hook 'turn-on-flyspell)
+					;    (add-hook 'org-mode-hook 'turn-on-flyspell)
 
-))
+    ))
 
 (use-package ruby-mode
   :mode (("\\.rb\\'" . ruby-mode)

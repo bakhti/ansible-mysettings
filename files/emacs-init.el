@@ -11,6 +11,8 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+(require 'use-package)
+
 ;; keep customize settings in their own file
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
