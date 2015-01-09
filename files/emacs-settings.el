@@ -7,7 +7,8 @@
     (setq company-idle-delay 0.2
           ;; min prefix of 3 chars
           company-minimum-prefix-length 3
-          company-dabbrev-downcase nil)
+          company-dabbrev-downcase nil
+	  company-show-numbers t)
     (add-hook 'prog-mode-hook 'global-company-mode)))
 
 (use-package dired
