@@ -1,18 +1,26 @@
+;;; settings.el --- Emacs configuration
+;;; Commentary:
+
+;;; Code:
+
 (diminish 'isearch-mode (string 32 #xf06e))
 
 (use-package company
-  :diminish ""
+  :ensure t
+  :defer t
+  :idle (global-company-mode)
   :config
   (progn
     (setq company-idle-delay 0.2
           ;; min prefix of 3 chars
           company-minimum-prefix-length 3
           company-dabbrev-downcase nil
-	  company-show-numbers t)
-    (add-hook 'prog-mode-hook 'global-company-mode)))
+	  company-show-numbers t))
+  :diminish company-mode)
 
 (use-package dired
-  :bind ("C-x C-j" . dired-jump)
+  :defer t
+  :bind (("C-x C-j" . dired-jump))
   :config
   (progn
     (use-package dired-x
@@ -21,25 +29,28 @@
     (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
     (define-key dired-mode-map (kbd "C-M-u") 'dired-up-directory)
     (setq ls-lisp-dirs-first t
-     dired-recursive-copies 'always
-     dired-recursive-deletes 'always)
+	  dired-recursive-copies 'always
+	  dired-recursive-deletes 'always)
     (add-hook 'dired-mode-hook (lambda () (hl-line-mode)))))
 
 (use-package guide-key
-  :diminish ""
+  :defer t
   :config
   (setq guide-key-mode t
 	guide-key/guide-key-sequence
 	(quote
 	 ("C-x r" "C-x n" "C-x 4" "C-x v" "C-x 8" "C-c p" "C-c i" "\e\e\m" "\e\et" "\e\el"))
 	guide-key/popup-window-position 'bottom
-	guide-key/recursive-key-sequence-flag t))
+	guide-key/recursive-key-sequence-flag t)
+  :diminish guide-key-mode)
 
 (use-package eldoc
-  :diminish "ed"
-  :config (setq eldoc-idle-delay 0.2))
+  :defer t
+  :config (setq eldoc-idle-delay 0.2)
+  :diminish "ed")
 
 (use-package erc
+  :defer t
   :config
   (progn
     (setq erc-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE")
@@ -47,7 +58,15 @@
 	  erc-prompt-for-password nil)))
 
 (use-package moe-theme
-  :init (moe-dark))
+  :ensure t
+  :defer t
+  :init (load-theme 'moe-dark))
+
+(use-package smart-mode-line
+  :init
+  (progn
+    (sml/setup)
+    (sml/apply-theme 'dark)))
 
 (use-package ido
   :init (progn
@@ -127,7 +146,7 @@
     (define-key my/mc-map "r" 'mc/reverse-regions)))
 
 (use-package ace-jump-mode
-  :bind ("C-s-SPC" . ace-jump-mode))
+  :bind (("C-s-SPC" . ace-jump-mode)))
 
 (use-package ace-window
   :config
@@ -140,14 +159,15 @@
   (add-hook 'prog-mode-hook 'aggressive-indent-mode))
 
 (use-package expand-region
-  :bind ("C-=" . er/expand-region))
+  :bind (("C-=" . er/expand-region)))
 
 (use-package projectile
   :init (projectile-global-mode)
-  :config (setq projectile-mode-line (quote (:eval (format " Πρ[%s]" (projectile-project-name))))))
+  :config
+  (setq projectile-mode-line (quote (:eval (format " Πρ[%s]" (projectile-project-name))))))
 
 (use-package magit
-  :bind ("\e\eg" . magit-status)
+  :bind (("\e\eg" . magit-status))
   :init (add-hook 'magit-mode-hook  '(lambda () (hl-line-mode)))
   :config
   (progn
@@ -158,10 +178,9 @@
     (add-hook 'magit-log-edit-mode-hook
 	      #'(lambda ()
 		  (set-fill-column 72)))))
-;		  (flyspell-mode)))))
 
 (use-package python
-  :mode ("\\.py\\'" . python-mode)
+  :mode "\\.py\\'"
   :config
   (progn
     (setq python-shell-completion-module-string-code "';'.join(module_completion('''%s'''))"
@@ -217,10 +236,8 @@
     ))
 
 (use-package ruby-mode
-  :mode (("\\.rb\\'" . ruby-mode)
-	 ("Vagrantfile\\'" . ruby-mode)
-	 ("Berksfile\\'" . ruby-mode))
-  :interpreter ("ruby" . ruby-mode)
+  :mode "\\(\\.rb\\|Vagrantfile\\|Berksfile\\)\\'"
+  :interpreter (("ruby" . ruby-mode))
   :config
   (progn
     (use-package yari)
@@ -231,11 +248,11 @@
 
 (use-package ispell
   :disabled t
-  :bind (("C-c i c" . ispell-comments-and-strings)
-	 ("C-c i d" . ispell-change-dictionary)
-	 ("C-c i k" . ispell-kill-ispell)
-	 ("C-c i m" . ispell-message)
-	 ("C-c i r" . ispell-region))
+  :bind ((("C-c i c" . ispell-comments-and-strings)
+	  ("C-c i d" . ispell-change-dictionary)
+	  ("C-c i k" . ispell-kill-ispell)
+	  ("C-c i m" . ispell-message)
+	  ("C-c i r" . ispell-region)))
   :config
   (progn
     (setq-default ispell-program-name "aspell")
@@ -243,23 +260,39 @@
 	  ispell-extra-args '("--sug-mode=ultra" "--ignore=3"))
     (add-to-list 'ispell-skip-region-alist '("[^\000-\377]+"))))
 
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode)
+  :config
+  (progn
+    (setq flycheck-completion-system 'ido)
+    (set-face-attribute 'flycheck-error-list-checker-name nil :inherit 'italic))
+  :diminish flychek-mode)
+
+(use-package flycheck-pos-tip
+  :ensure t
+  :defer t
+  :init
+  (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
+
 (use-package flyspell
   :disabled t
-  :bind (("C-c i b" . flyspell-buffer)
-	 ("C-c i f" . flyspell-mode))
+  :bind ((("C-c i b" . flyspell-buffer)
+	  ("C-c i f" . flyspell-mode)))
   :diminish "✈")
 
 (use-package jinja2-mode
-  :mode ("\\.j2\\'" . jinja2-mode))
+  :mode "\\.j2\\'")
 
 (use-package json-mode
-  :mode ("\\.template\\'" . json-mode))
+  :mode "\\.template\\'"
+  :config (setq js-indent-level 2))
 
 (use-package yaml-mode
-  :mode ("\\.yml\\'" . yaml-mode))
+  :mode "\\.yml\\'")
 
 (use-package markdown-mode
-  :mode ("\\.md\\'" . markdown-mode)
+  :mode "\\.md\\'"
   :config  (setq markdown-command "markdown_py"))
 
 (use-package notmuch
@@ -283,5 +316,6 @@
 
 (use-package my-functions
   :load-path "~/.emacs.d/lisp")
+
 (use-package my-key-bindings
   :load-path "~/.emacs.d/lisp")
